@@ -6,7 +6,7 @@ char  c[25];
 
 int main()
 {
-    FILE *fp = fopen("/local/yaw.txt", "r");
+    FILE *fp = fopen("/local/yaw.txt", "r"); //lookup table has yaw values 
 
         for(int j=0; j<600; j++) {
     
