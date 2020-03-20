@@ -374,7 +374,7 @@ int main()
     while(1) {
 
 
-        //=============reading sensor values============
+        //=============reading sensor values ==================
 
 
         APPS1_in = APPS1_read;
@@ -386,17 +386,21 @@ int main()
         VOLTAGE_in = VOLTAGE_read;
         energy_time = t4.read();
 
-       if(time_apps - time_apps_last > time_out){//delay of message
-           APPS1_in = APPS1_min;
-           APPS2_in = APPS2_min;
-           STEER_in = STEER_mid;
-       }
+
 
        energy = (energy_prev + (VOLTAGE_in*CURRENT_in* (energy_time - energy_time_prev)))/1000000;
 
        energy_time_prev = energy_time ;
 
        time_apps_last = time_apps ;
+        
+   // ==========================================  (in a header file)==================  
+        
+      if(time_apps - time_apps_last > time_out){//delay of message
+           APPS1_in = APPS1_min;
+           APPS2_in = APPS2_min;
+           STEER_in = STEER_mid;
+       }
 
         if (APPS1_in <APPS1_gmin || APPS1_in>APPS1_gmax || APPS2_in<APPS2_gmin || APPS2_in>APPS2_gmax || BPS_in < BPS_gmin || BPS_in>BPS_gmax ) {//generating signal outside operating range
             torque_left = 0;
@@ -430,12 +434,12 @@ int main()
 
             APPS_avg = 1.0*(APPS1_normalised+APPS2_normalised)/2.0; // APPS_avg is normalised    
 
-//====================================   brake light =================================================
+//====================================   brake light (in a header file)=================================================
             if(BPS_in>BPS_actuated)
                 {brake_light_Sig=0;}
             else
                 {brake_light_Sig=1;}
-//====================================  led indications    ============================================================
+//====================================  led indications   (in a header file) ============================================================
 
             if(ignition_Sig.read()==1) {
                 led1 = 1;
@@ -448,7 +452,7 @@ int main()
             } else if(gr_90_Sig.read()==0) {
                 led2 = 0;
             }
-//====================================  starting sequence      ====================================
+//====================================  starting sequence     (in a header file) ====================================
 
   
             if(!flag_rtds) {
@@ -472,7 +476,7 @@ int main()
             torque_right_temp = torque_avg;
             
 
-//==================================Power Block determines max torque======================
+//==================================Power Block determines max torque (in a header file)======================
 
            if( fixed_Torquemax* rpm_left_receive*2*3.14/60 > power_max || fixed_Torquemax* rpm_left_receive*2*3.14/60 > power_max ){
                 if(rpm_left_receive > rpm_right_receive){
@@ -494,7 +498,7 @@ int main()
             torque_right_temp = torque_avg;
 
 
-////=============APPS AND BPS PLAUSIBILITY=============================
+////==========================APPS AND BPS PLAUSIBILITY (in a header file)=============================
 
             if(apps_plaus_flag== 1 && abs(APPS1_normalised-APPS2_normalised)<10){//APPS Plausibility
                 t1.stop();
